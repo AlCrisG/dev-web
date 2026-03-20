@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react-router-dom";
 import { teamData, defaultServices } from "./data";
-import "./styles.css"; // Tu CSS intacto
+import "./styles.css";
 
 // --- COMPONENTES DE INTERFAZ ---
 
