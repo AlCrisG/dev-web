@@ -54,6 +54,14 @@ const services = [
     tag: "Soporte"
   },
   {
+    id: 6,
+    name: "Diseño UI/UX",
+    description: "Diseño de interfaces atractivas y experiencias de usuario intuitivas para plataformas web y móviles.",
+    price: 1300,
+    emoji: "🎨",
+    tag: "Diseño"
+  },
+  {
     id: 7,
     name: "Migración a la Nube",
     description: "Planificación y ejecución de migraciones de infraestructura on-premise hacia AWS, Azure o Google Cloud.",
@@ -290,8 +298,27 @@ function buildFooter() {
     links.appendChild(a);
   });
 
+  const validators = el("div", "footer-validators");
+  validators.innerHTML = `
+      <p>
+          <a href="https://jigsaw.w3.org/css-validator/check/referer">
+              <img style="border:0;width:88px;height:31px"
+                  src="https://jigsaw.w3.org/css-validator/images/vcss"
+                  alt="¡CSS Válido!" />
+          </a>
+      </p>
+      <p>
+          <a href="https://validator.w3.org/#uri=referer">
+              <img style="border:0;width:88px;height:31px"
+                  src="https://www.w3.org/Icons/valid-html401"
+                  alt="¡HTML Válido!" />
+          </a>
+      </p>
+  `;
+
   inner.appendChild(copy);
   inner.appendChild(links);
+  inner.appendChild(validators);
   footer.appendChild(inner);
   return footer;
 }
