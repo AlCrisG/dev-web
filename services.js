@@ -4,15 +4,15 @@
 const team = [
   {
     name: "Hiram Montaño",
-    role: "Estudiante de Ingeniería en Sistemas Computacionales",
+    role: "Estudiante de Ingeniería en Sistemas Computacionales"
   },
   {
     name: "Jacinto Crisostomo",
-    role: "Estudiante de Ingeniería en Sistemas Computacionales",
+    role: "Estudiante de Ingeniería en Sistemas Computacionales"
   }
 ];
 
-const services = [
+const defaultServices = [
   {
     id: 1,
     name: "Desarrollo Web Full-Stack",
@@ -87,6 +87,12 @@ const services = [
   },
 ];
 
+const servicesString = localStorage.getItem("services");
+let services = defaultServices;
+if (servicesString) {
+  services = JSON.parse(servicesString);
+}
+
 // ============================================================
 //  Functions
 // ============================================================
@@ -119,10 +125,16 @@ function buildHeader() {
   ["Inicio","Equipo","Servicios"].forEach(function(label) {
     const li = el("li");
     const a = el("a", "nav-link", label);
-    a.href = "#" + label.toLowerCase();
+    a.href = "index.html#" + label.toLowerCase();
     li.appendChild(a);
     navLinks.appendChild(li);
   });
+
+  const liAlta = el("li");
+  const aAlta = el("a", "nav-link", "Alta de Servicios");
+  aAlta.href = "alta.html";
+  liAlta.appendChild(aAlta);
+  navLinks.appendChild(liAlta);
 
   nav.appendChild(logo);
   nav.appendChild(navLinks);
@@ -274,6 +286,70 @@ function filterCards(tag) {
 }
 
 // ============================================================
+//  CONSTRUIR FORMULARIO DE ALTA
+// ============================================================
+function buildAltaForm() {
+  const section = el("section", "section");
+  
+  const header = el("div", "section-header");
+  const title = el("h2", "section-title", "Alta de Servicios");
+  const desc = el("p", "section-desc", "Agrega un nuevo servicio al catálogo llenando este formulario.");
+  header.appendChild(title);
+  header.appendChild(desc);
+
+  const form = el("form", "alta-form");
+
+  function createInput(id, labelText, type) {
+    const wrapper = el("div", "form-group");
+    const label = el("label", "form-label", labelText);
+    label.htmlFor = id;
+    
+    const input = el(type === "textarea" ? "textarea" : "input", "form-control");
+    input.id = id;
+    input.name = id;
+    input.required = true;
+    if (type !== "textarea") input.type = type;
+    
+    wrapper.appendChild(label);
+    wrapper.appendChild(input);
+    return wrapper;
+  }
+
+  form.appendChild(createInput("name", "Nombre del Servicio:", "text"));
+  form.appendChild(createInput("description", "Descripción:", "textarea"));
+  form.appendChild(createInput("price", "Precio (MXN):", "number"));
+  form.appendChild(createInput("emoji", "Emoji representativo (ej. 💻):", "text"));
+  form.appendChild(createInput("tag", "Categoría (Tag):", "text"));
+
+  const submitBtn = el("button", "btn btn-primary", "Guardar Servicio");
+  submitBtn.type = "submit";
+  form.appendChild(submitBtn);
+
+  form.addEventListener("submit", function(e) {
+    e.preventDefault();
+    
+    const newService = {
+      id: Date.now(),
+      name: document.getElementById("name").value,
+      description: document.getElementById("description").value,
+      price: parseFloat(document.getElementById("price").value),
+      emoji: document.getElementById("emoji").value,
+      tag: document.getElementById("tag").value
+    };
+
+    services.push(newService);
+    localStorage.setItem("services", JSON.stringify(services));
+    
+    alert("¡Servicio agregado con éxito!");
+    window.location.href = "index.html#servicios";
+  });
+
+  section.appendChild(header);
+  section.appendChild(form);
+  return section;
+}
+
+// ============================================================
 //  CONSTRUIR FOOTER
 // ============================================================
 function buildFooter() {
@@ -299,16 +375,24 @@ function buildFooter() {
 // ============================================================
 //  MONTAR TODO EN #app
 // ============================================================
-(function init() {
+function init() {
   const app = document.getElementById("app");
 
   app.appendChild(buildHeader());
 
   const main = el("main", "main-content");
-  main.appendChild(buildHero());
-  main.appendChild(buildTeam());
-  main.appendChild(buildServices());
-  app.appendChild(main);
+  const path = window.location.pathname;
+  
+  if (path.includes("alta.html")) {
+    main.appendChild(buildAltaForm());
+  } else {
+    main.appendChild(buildHero());
+    main.appendChild(buildTeam());
+    main.appendChild(buildServices());
+  }
 
+  app.appendChild(main);
   app.appendChild(buildFooter());
-})();
+}
+
+init();
