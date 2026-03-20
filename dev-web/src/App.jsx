@@ -168,6 +168,22 @@ function Footer() {
           <a href="/#equipo" className="footer-link">Equipo</a>
           <a href="/#servicios" className="footer-link">Servicios</a>
         </div>
+        <div className="footer-validators">
+          <p>
+            <a href="https://jigsaw.w3.org/css-validator/check/referer">
+              <img style={{ border: 0, width: '88px', height: '31px' }}
+                src="https://jigsaw.w3.org/css-validator/images/vcss"
+                alt="¡CSS Válido!" />
+            </a>
+          </p>
+          <p>
+            <a href="https://validator.w3.org/#uri=referer">
+              <img style={{ border: 0, width: '88px', height: '31px' }}
+                src="https://www.w3.org/Icons/valid-html401"
+                alt="¡HTML Válido!" />
+            </a>
+          </p>
+        </div>
       </div>
     </footer>
   );
